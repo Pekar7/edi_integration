@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.1'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+ext {
+    set('springCloudVersion', "2023.0.0")
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+
+    //БД
+    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.springframework:spring-tx:' // транзакции
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'com.zaxxer:HikariCP'
+    implementation 'org.springframework:spring-context'
+
+    //Kafka
+    implementation 'org.springframework.kafka:spring-kafka'
+
+    //Cloud
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+    //Other
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
