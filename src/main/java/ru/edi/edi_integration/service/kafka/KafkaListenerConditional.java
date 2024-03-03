@@ -39,6 +39,19 @@ public class KafkaListenerConditional {
         }
     }
 
+    @Transactional(transactionManager = "tmKafkaMessage", rollbackFor = RuntimeException.class, propagation = Propagation.REQUIRES_NEW)
+    @KafkaListener(groupId = "${project.kafka.consumer.group.id}", topics = {"${project.kafka.module.topic.edifact.adapted.encrypt}"}, containerFactory = "batchFactoryInt")
+    public void edifactEncryptedInternalListener(List<ConsumerRecord<String, String>> messages) {
+        try {
+            for (ConsumerRecord<String, String> message : messages) {
+                log.info("encrypt");
+                processEdifactListener(message, false);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
     private void processEdifactListener(ConsumerRecord<String, String> message, Boolean signatureMark) {
         try {
             String edifactId = message.key();

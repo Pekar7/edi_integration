@@ -357,7 +357,7 @@ public class EdifactRouterService {
                     break;
                 default:
                     log.error("Not Found Receiver  " + recipientName);
-                    throw new IllegalArgumentException("Not Found Sender " + recipientName);
+                    throw new RuntimeException("Not Found Sender " + recipientName);
             }
         } catch (Exception e) {
             log.error("Failed edifactSelectorSend method {}", e.getMessage());
