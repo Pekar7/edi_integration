@@ -15,6 +15,11 @@ public class DevProfileCondition implements Condition {
     public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
         Environment environment = context.getEnvironment();
         String conditionalContext = environment.getProperty("project.profile.conditional");
+
+        if (conditionalContext == null || conditionalContext.equalsIgnoreCase("null") || conditionalContext.isBlank()) {
+            return false;
+        }
+
         String[] activeProfiles = environment.getActiveProfiles();
         for (String profile : activeProfiles) {
             if (conditionalContext.equalsIgnoreCase(profile)) {
