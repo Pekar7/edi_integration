@@ -9,20 +9,21 @@ import java.lang.reflect.Proxy;
 @Configuration
 public class HelloServiceProxyConfig {
 
-    @Value("${serviceUrls.com.example.edi_intconvert.service.HelloService}")
+    @Value("${serviceUrls.hello}")
     private String helloServiceUrl;
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 
     @Bean
     public HelloService helloService(RestTemplate restTemplate) {
         return (HelloService) Proxy.newProxyInstance(
                 HelloService.class.getClassLoader(),
                 new Class[]{HelloService.class},
-                new ru.edi.edi_integration.service.HelloServiceInvocationHandler(helloServiceUrl, restTemplate)
+                new ExternalServiceInvocationHandler(helloServiceUrl, restTemplate)
         );
     }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 }
+

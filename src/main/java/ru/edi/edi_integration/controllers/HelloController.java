@@ -13,8 +13,8 @@ public class HelloController {
         this.helloServiceHandler = helloServiceHandler;
     }
 
-    @GetMapping("/proxy/karolina")
-    public String callKarolina() {
-        return helloServiceHandler.handleHello("Karolina");
+    @GetMapping("/proxy/karolina/{karolina}")
+    public String callKarolina(@PathVariable String karolina) {
+        return helloServiceHandler.handleHello(karolina);
     }
 }
