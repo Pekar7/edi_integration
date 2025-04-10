@@ -6,7 +6,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 public class ExternalServiceInvocationHandler implements InvocationHandler {
-
     private final String baseUrl;
     private final RestTemplate restTemplate;
 
@@ -19,19 +18,18 @@ public class ExternalServiceInvocationHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if (method.getDeclaringClass() == Object.class) {
             return switch (method.getName()) {
-                case "toString" -> "Proxy for " + proxy.getClass();
+                case "toString" -> proxy.getClass().getName();
                 case "hashCode" -> System.identityHashCode(proxy);
                 case "equals" -> proxy == args[0];
                 default -> null;
             };
         }
 
-        if (args == null || args.length == 0) {
-            throw new IllegalArgumentException("Proxy method " + method.getName() + " called without arguments");
+        if (args == null || args.length != 1) {
+            throw new IllegalArgumentException("Expected exactly one argument for method " + method.getName());
         }
 
-        // Новый правильный путь:
-        String url = baseUrl + "/hello/" + method.getName();
+        String url = baseUrl + method.getName();
         return restTemplate.postForObject(url, args[0], method.getReturnType());
     }
 }
