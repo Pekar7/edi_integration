@@ -1,4 +1,4 @@
-package ru.edi.edi_integration.service.discovery;
+package ru.edi.edi_integration.service.proxy.discovery;
 
 import java.util.Properties;
 

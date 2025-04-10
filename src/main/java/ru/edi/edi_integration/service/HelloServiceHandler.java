@@ -16,5 +16,9 @@ public class HelloServiceHandler {
     public String handleHello(String name) {
         return helloService.sendHello(name);
     }
+
+    public String handleDocument(String name) {
+        return helloService.getDocument();
+    }
 }
 
