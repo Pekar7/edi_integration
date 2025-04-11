@@ -52,7 +52,7 @@ public class DynamicProxyBuilder {
             throw new IllegalStateException("No OpenAPI mapping found for method " + method.getName());
         }
 
-        InstanceInfo instance = eurekaClient.getNextServerFromEureka(serviceId, false);
+        InstanceInfo instance = getInstanceWithRetry(serviceId, 5, 1000); // 5 попыток по 1 сек
         String baseUrl = instance.getHomePageUrl();
         String fullUrl = baseUrl + operation.path();
         HttpMethod httpMethod = HttpMethod.valueOf(operation.httpMethod());
@@ -62,7 +62,8 @@ public class DynamicProxyBuilder {
 
         Object response;
         try {
-            log.info("{} Вызов метода {}#{}({})", traceId, clazz.getName(), method.getName(), args != null && args.length > 0 ? args[0] : "");
+            log.info("{} Вызов метода {}#{}({})", traceId, clazz.getName(), method.getName(),
+                    args != null && args.length > 0 ? args[0] : "");
 
             if (httpMethod == HttpMethod.GET || httpMethod == HttpMethod.DELETE) {
                 String queryParam = (args != null && args.length > 0) ? "?arg=" + args[0] : "";
@@ -82,5 +83,25 @@ public class DynamicProxyBuilder {
             log.error("{} Ошибка при вызове метода {}#{}: {}", traceId, clazz.getName(), method.getName(), e.getMessage(), e);
             throw e;
         }
+    }
+
+    private InstanceInfo getInstanceWithRetry(String serviceId, int maxAttempts, long delayMillis) {
+        for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+            try {
+                return eurekaClient.getNextServerFromEureka(serviceId, false);
+            } catch (RuntimeException e) {
+                if (attempt == maxAttempts) {
+                    throw new RuntimeException("Не удалось найти сервис в Eureka после " + maxAttempts + " попыток: " + serviceId, e);
+                }
+                log.warn("Попытка #{} — Сервис {} не найден. Повтор через {} мс", attempt, serviceId, delayMillis);
+                try {
+                    Thread.sleep(delayMillis);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException("Прерывание ожидания при повторе запроса Eureka", ie);
+                }
+            }
+        }
+        throw new IllegalStateException("Не удалось получить InstanceInfo — это должно быть невозможно.");
     }
 }
