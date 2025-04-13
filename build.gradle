@@ -46,7 +46,14 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+//   convert-api
     implementation files('/Users/mac/Desktop/edi_system/convert-api/build/libs/convert-api-1.0.1.jar')
+//  tproxy
+    implementation files('/Users/mac/Desktop/tproxy-javavit/target/tproxy-javavit-1.0.1-SNAPSHOT.jar')
+    implementation files('/Users/mac/Desktop/common-api-javavit/target/common-api-javavit-1.0-SNAPSHOT.jar')
 }
 
 tasks.named('test') {

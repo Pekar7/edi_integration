@@ -14,7 +14,11 @@ public class HelloServiceHandler {
     }
 
     public String handleHello(String name) {
-        return helloService.transferToManufacturing(2);
+        return helloService.sendHello(name);
+    }
+
+    public String handleDocument(String name) {
+        return helloService.getDocument();
     }
 }
 
