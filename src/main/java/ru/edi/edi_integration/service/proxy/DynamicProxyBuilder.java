@@ -52,7 +52,7 @@ public class DynamicProxyBuilder {
             throw new IllegalStateException("No OpenAPI mapping found for method " + method.getName());
         }
 
-        InstanceInfo instance = getInstanceWithRetry(serviceId, 5, 1000); // 5 попыток по 1 сек
+        InstanceInfo instance = getInstanceWithRetry(serviceId, 10, 1000); // 10 попыток по 1 сек
         String baseUrl = instance.getHomePageUrl();
         String fullUrl = baseUrl + operation.path();
         HttpMethod httpMethod = HttpMethod.valueOf(operation.httpMethod());

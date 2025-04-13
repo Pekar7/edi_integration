@@ -1,0 +1,97 @@
+server:
+  port: 8085
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/edi_demodb
+    username: postgres
+    password: 20012003
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  application:
+    name: intIn
+  doc:
+    api-docs:
+      enabled: true
+    swagger-ui:
+      enabled: true
+
+project:
+  profile:
+    conditional: null
+
+  db:
+    driver-class-name: org.postgresql.Driver
+    password: 20012003
+    url: jdbc:postgresql://localhost:5432/edi_demodb
+    username: postgres
+
+  hibernate:
+    bytecode:
+      use_reflection_optimizer: false
+    default_schema: edi_reg
+    format_sql: true
+    generate_statistics: false
+    id:
+      new_generator_mappings: false
+    jdbc:
+      lob:
+        non_contextual_creation: true
+    search:
+      autoregister_listeners: false
+    show_sql: false
+    use_sql: true
+
+  hikari:
+    connectionTimeout: 30000
+    idleTimeout: 30000
+    maximumPoolSize: 20
+    maxLifetime: 2000000
+    minimumIdle: 5
+    poolName: EdiIntInDataBack_Pool
+    testQuery: SELECT 1
+
+  kafka:
+    client:
+      id: clientEdiIntInDataBack
+    replication:
+      factor: 1
+    server: localhost:9092
+    consumer:
+      id: consumerEdiIntInDataBack
+      group:
+        id: groupEdiIntInDataBack
+    module:
+      topic:
+        edifact:
+          adapted:
+            encrypt: edi.intIn.adapted.encrypt
+            crypt: edi.intIn.adapted.crypt
+    topic:
+      module:
+        intIn:
+          out:
+            xml: edi.intIn.convert.xml
+            edifact: edi.intIn.convert.edifact
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    initial-instance-info-replication-interval-seconds: 5
+  instance:
+    prefer-ip-address: true
+
+logging:
+  level:
+    com.netflix.eureka: OFF
+    com.netflix.discovery: OFF
+
+external-services:
+  - alias: helloService
+    class-name: ru.edi.convert_api.HelloService
+    handler-type: REST
+    parameters:
+      service-id: intConvert
