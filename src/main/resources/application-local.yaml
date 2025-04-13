@@ -89,9 +89,18 @@ logging:
     com.netflix.eureka: OFF
     com.netflix.discovery: OFF
 
-external-services:
-  - alias: helloService
-    class-name: ru.edi.convert_api.HelloService
-    handler-type: REST
-    parameters:
-      service-id: intConvert
+#external-services:
+#  - alias: helloService
+#    class-name: ru.edi.convert_api.HelloService
+#    handler-type: REST
+#    parameters:
+#      service-id: intConvert
+
+discovery:
+  entries:
+    - alias: HelloService
+      class-name: ru.edi.convert_api.HelloService
+      handler-type: REST
+      parameters:
+        service-id: intConvert
+

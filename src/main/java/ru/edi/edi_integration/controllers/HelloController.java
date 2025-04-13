@@ -1,5 +1,6 @@
 package ru.edi.edi_integration.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.*;
 import ru.edi.edi_integration.service.HelloServiceHandler;
 
@@ -13,7 +14,8 @@ public class HelloController {
         this.helloServiceHandler = helloServiceHandler;
     }
 
-    @GetMapping("/proxy/karolina/{karolina}")
+    @Operation(summary = "Send hello to someone", operationId = "handleHello")
+    @PostMapping("/proxy/karolina/{karolina}")
     public String callKarolina(@PathVariable String karolina) {
         return helloServiceHandler.handleHello(karolina);
     }
