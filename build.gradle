@@ -29,29 +29,35 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
 
-    //БД
+    // БД
     runtimeOnly 'org.postgresql:postgresql'
-    implementation 'org.springframework:spring-tx:' // транзакции
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'com.zaxxer:HikariCP'
     implementation 'org.springframework:spring-context'
 
-    //Kafka
+    // Kafka
     implementation 'org.springframework.kafka:spring-kafka'
 
-    //Cloud
+    // Cloud
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
-    //Other
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // Security (новый способ через Spring Security + OAuth2 Resource Server)
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    implementation 'org.keycloak:keycloak-spring-boot-starter:24.0.1'
 
+    // OpenAPI / Swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+
+    // Ломбок
+    annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-//   convert-api
+    // Тесты
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // Внутренние JAR
     implementation files('/Users/mac/Desktop/edi_system/convert-api/build/libs/convert-api-1.0.1.jar')
-//  tproxy
     implementation files('/Users/mac/Desktop/tproxy-javavit/target/tproxy-javavit-1.0.1-SNAPSHOT.jar')
     implementation files('/Users/mac/Desktop/common-api-javavit/target/common-api-javavit-1.0-SNAPSHOT.jar')
 }

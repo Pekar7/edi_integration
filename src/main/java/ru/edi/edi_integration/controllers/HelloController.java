@@ -1,6 +1,9 @@
 package ru.edi.edi_integration.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.edi.edi_integration.service.HelloServiceHandler;
 
@@ -19,4 +22,10 @@ public class HelloController {
     public String callKarolina(@PathVariable String karolina) {
         return helloServiceHandler.handleHello(karolina);
     }
+
+    @GetMapping("/whoami")
+    public String whoami(Authentication auth) {
+        return auth.getAuthorities().toString();
+    }
+
 }

@@ -12,11 +12,21 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   application:
     name: intIn
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/edi
+
   doc:
     api-docs:
       enabled: true
     swagger-ui:
       enabled: true
+      persistAuthorization: true
+      display-request-duration: true
+      operations-sorter: method
+      tags-sorter: alpha
 
 project:
   profile:
@@ -76,6 +86,8 @@ project:
             xml: edi.intIn.convert.xml
             edifact: edi.intIn.convert.edifact
 
+# это чтобы OpenAPI знал про security scheme
+
 eureka:
   client:
     service-url:
@@ -88,6 +100,9 @@ logging:
   level:
     com.netflix.eureka: OFF
     com.netflix.discovery: OFF
+    org.springframework.security: DEBUG
+    org.keycloak.adapters: DEBUG
+    org.keycloak: DEBUG
 
 discovery:
   entries:
@@ -96,4 +111,17 @@ discovery:
       handler-type: REST
       parameters:
         service-id: intConvert
+
+keycloak:
+  realm: edi
+  auth-server-url: http://localhost:8080
+  ssl-required: none
+  resource: edi-client
+  bearer-only: true
+  credentials:
+    secret: d08lACwwfOo3dEUhksRDvUFpPBrT11zL
+
+application:
+  authRoles: EDITOR
+  authRolesViewer: VIEWER
 
