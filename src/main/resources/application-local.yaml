@@ -10,8 +10,10 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
   application:
     name: intIn
+
   security:
     oauth2:
       resourceserver:
@@ -21,12 +23,20 @@ spring:
   doc:
     api-docs:
       enabled: true
+
     swagger-ui:
-      enabled: true
+      client-secret: d08lACwwfOo3dEUhksRDvUFpPBrT11zL
+      oauth2-redirect-url: http://localhost:8085/swagger-ui/oauth2-redirect.html
+      use-pkce-with-authorization-code-grant: true
       persistAuthorization: true
       display-request-duration: true
       operations-sorter: method
       tags-sorter: alpha
+      client-id: edi-client
+      oauth2:
+        authorization-url: http://localhost:8080/realms/edi/protocol/openid-connect/auth
+        token-url: http://localhost:8080/realms/edi/protocol/openid-connect/token
+
 
 project:
   profile:
@@ -117,11 +127,7 @@ keycloak:
   auth-server-url: http://localhost:8080
   ssl-required: none
   resource: edi-client
-  bearer-only: true
-  credentials:
-    secret: d08lACwwfOo3dEUhksRDvUFpPBrT11zL
 
 application:
   authRoles: EDITOR
   authRolesViewer: VIEWER
-
