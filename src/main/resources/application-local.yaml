@@ -18,7 +18,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/edi
+          issuer-uri: http://localhost:8080/realms/JavaVIT
 
   doc:
     api-docs:
@@ -34,8 +34,8 @@ spring:
       tags-sorter: alpha
       client-id: edi-client
       oauth2:
-        authorization-url: http://localhost:8080/realms/edi/protocol/openid-connect/auth
-        token-url: http://localhost:8080/realms/edi/protocol/openid-connect/token
+        authorization-url: http://localhost:8080/realms/JavaVIT/protocol/openid-connect/auth
+        token-url: http://localhost:8080/realms/JavaVIT/protocol/openid-connect/token
 
 
 project:
@@ -123,7 +123,7 @@ discovery:
         service-id: intConvert
 
 keycloak:
-  realm: edi
+  realm: JavaVIT
   auth-server-url: http://localhost:8080
   ssl-required: none
   resource: edi-client
